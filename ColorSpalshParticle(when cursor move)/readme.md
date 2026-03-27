@@ -3,9 +3,23 @@
 A creative JavaScript experiment that generates a vibrant "color splash" particle effect following the user's cursor movement.
 
 
-📸<h2> Preview</h2>
+<h2>📸 Preview</h2>
 
-![alt text](<../../Screenshot 2026-03-27 143641.png>)
+
+
+
+![alt text](<Screenshot 2026-03-27 143641.png>)
+
+
+
+
+
+
+
+
+
+
+
 
 
 <video controls src="Screen Recording 2026-03-27 143600.mp4" title="add"></video>
