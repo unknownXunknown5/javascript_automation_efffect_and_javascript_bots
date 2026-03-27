@@ -35,7 +35,7 @@ A creative JavaScript experiment that generates a vibrant "color splash" particl
  *  Basic styling to ensure a full-screen experience.
 🛠️ How to Run
  * Clone the repository:
-   git clone https://github.com/kriyanshkirito/javascript_bots.git
+   git cone "link of this respostory"
 
  * Navigate to the ColorSpalshParticle folder.
  * Open index.html in any modern web browser.
