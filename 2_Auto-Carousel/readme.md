@@ -56,7 +56,7 @@ auto-carousel/
 1. Clone the repository
 
 ```bash
-git clone https://github.com/kriyanshkirito/auto-carousel.git
+git clone https://github.com/kriyanshkirito/2_Auto-Carousel.git
 ```
 
 2. Open `index.html` in your browser
