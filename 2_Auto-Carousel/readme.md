@@ -16,18 +16,22 @@ It automatically slides images at a fixed interval and also supports manual navi
 Screenshots
 
 
-![alt text](<../../Screenshot 2026-03-28 192551.png>)
-
-
-![alt text](<../../Screenshot 2026-03-28 192651.png>)
 
 
 
-![alt text](<../../Screenshot 2026-03-28 192619.png>)
+![alt text](<screenshot/Screenshot 2026-03-28 192551.png>)
+
+
+![alt text](<screenshot/Screenshot 2026-03-28 192639.png>)
 
 
 
-![alt text](<../../Screenshot 2026-03-28 192651.png>)
+
+![alt text](<screenshot/Screenshot 2026-03-28 192651.png>)
+
+
+
+![alt text](<screenshot/Screenshot 2026-03-28 192619.png>)
 
 
 
