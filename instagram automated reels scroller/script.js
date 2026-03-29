@@ -12,7 +12,7 @@ const scrollBot = setInterval(() => {
 // but when you first paste output will come undefined but that will be okay beacause it is now activated
 
 /*for end the automatic function use
-for(let i=o;i<9999;i++){
+for(let i=0;i<9999;i++){
 windows.clearInterval(i);
 }
 
