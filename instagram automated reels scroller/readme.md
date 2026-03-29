@@ -26,6 +26,7 @@ Screenshot
 ![alt text](<screenshot/Screenshot 2026-03-29 212811.png>)
 
 🛠 The Script
+
 Copy and paste the script into your browser console
 
 ⚠️ Disclaimer
