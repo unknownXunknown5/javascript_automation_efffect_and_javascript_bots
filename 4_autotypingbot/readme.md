@@ -20,9 +20,10 @@ This project demonstrates **DOM manipulation, timing functions, and UI interacti
 
 ---
 
-## 📸 Preview
+## 📸 Preview![alt text](<Screenshot 2026-03-30 220644.png>)
 
-> 📷 * ![alt text](<../../Screen Recording 2026-03-30 214948.gif>)
+ 
+ > 📷 * ![alt text](<../../Screen Recording 2026-03-30 214948.gif>)
 
 ---
 
