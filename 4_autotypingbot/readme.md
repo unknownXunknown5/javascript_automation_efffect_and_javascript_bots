@@ -1,4 +1,3 @@
-Here’s a **clean, professional `README.md`** for your JavaScript Autotyping Bot project 👇
 
 ---
 
