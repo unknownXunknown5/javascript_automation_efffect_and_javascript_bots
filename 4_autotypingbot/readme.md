@@ -22,8 +22,9 @@ This project demonstrates **DOM manipulation, timing functions, and UI interacti
 
 ## 📸 Preview![alt text](<Screenshot 2026-03-30 220644.png>)
 
- 
- > 📷 * ![alt text](<../../Screen Recording 2026-03-30 214948.gif>)
+ <p style="font-family:cursive">gif is attached see it</p>
+
+ > 📷 * ![alt text](<Screen Recording 2026-03-30 214948.gif>)
 
 ---
 
