@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #explode{
+            border-radius:10px;
+            font-size:15px;
+        }
+        #explode:active{
+            font-size:20px;
+        }
+    </style>
+</head>
+<body>
+    <button id="explode">Launch Confetti</button>
+    <script>
+        const btn=document.getElementById("explode");
+        btn.addEventListener('click',()=>{
+            for(let i=0;i<150;i++){  // loop runs 150 times each loop creates one confetti pieces
+                const confetti=document.createElement('div');// make new div element in memory
+                confetti.style.position='fixed'; // postion the confetti relative to prowser window not inside other confetti
+                confetti.style.left=Math.random()*window.innerWidth+'px'; // places at random horizontal psition across screen
+                confetti.style.top='-10px'; // start slightly above visble screen
+                confetti.style.width='10px'; // each cofetti is small square
+                confetti.style.height='10px'; // _|
+                confetti.style.background=`hsl(${Math.random()*360},100%,50%)`; // gives random bright color 
+                document.body.appendChild(confetti);// places the cofetti into web so it become visible
+
+                const fall=Math.random()*3000+2000; // each fall for random time between 2sec to 5 sec
+                confetti.animate([// calls for animation
+                    {transform:`translateY(0) rotate(0deg)`}, // start postion at top
+                    {transform:`translateY(${window.innerHeight+50}px) rotate(720deg)`} // end postion moves down by height of window plus 50 px so that it falls at the bottom  // while falling spin 720 degree 2 full spin
+
+                ],{duration:fall,easing:'cubic-bezier(0.25,0.1,0.25,1)'});// defines speed curve make animation feel like more nastural
+                setTimeout(()=>confetti.remove(),fall);
+
+            }
+
+
+        }
+    );
+    </script>
+    
+</body>
+</html>
