@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Filling Bot</title>
+    <style>
+        main {
+
+            height: 500px;
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            
+        }
+
+        input {
+            height: 30px;
+            border-radius: 5px;
+        }
+
+        input::placeholder {
+            font-size: 20px;
+            color: rgb(60, 44, 44);
+            font-weight: 3px;
+            font-family: cursive;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <nav>
+            <h1 style="font-family:cursive">Form</h1>
+        </nav>
+        <main>
+            <input type="text" id="name" placeholder="Name">
+            <input type="text" id="email" placeholder="Email">
+            <input type="text" id="age" placeholder="Age">
+        </main>
+        <footer>
+            <button id="btn">submit</button>
+        </footer>
+
+
+
+
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('name').value = "bot";
+            document.getElementById('email').value = "bot@gmail.com";
+            document.getElementById('age').value = "22 mbt";
+
+
+            document.getElementById('btn').addEventListener('click', () => {
+                alert("form submitted");
+                
+
+
+            });
+        });
+
+    </script>
+<!-- 
+    why we use form bot to type we still need to type 
+    we use becuse:-> at particular instant we cannot made full form page and design it so it helps to reduce that time to make form -->
+
+</body>
+
+</html>
