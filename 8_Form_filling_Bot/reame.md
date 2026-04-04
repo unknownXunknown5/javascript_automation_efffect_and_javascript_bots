@@ -20,7 +20,7 @@ This demonstrates how bots can interact with web forms using **DOM manipulation 
 
 ## 📸 Preview
 
-> 📷 ![alt text](<../../Screenshot 2026-04-04 201349.png>)
+> 📷 ![alt text](<Screenshot 2026-04-04 201349.png>)
 
 ---
 
