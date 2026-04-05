@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>toggle visiblity</title>
+    <style>
+        #toggleBox {
+            width: 400px;
+            height: 600px;
+            color: white;
+            margin: 100px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+
+
+        }
+        h1{
+            text-align: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="slo"></h1>
+    <div id="toggleBox"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {   // if our script tag is end of body we nodd need dom content loaded
+            const box = document.getElementById("toggleBox");
+            const slob=document.getElementById("slo");
+            let visible = true;
+            const images = [
+                "url(/javascript_automation_efffect_and_javascript_bots/9_toggle_visiblity_image_slider/screenshot/anime1.jpeg)",
+                "url(/javascript_automation_efffect_and_javascript_bots/9_toggle_visiblity_image_slider/screenshot/anime3.jpg)",
+                "url(/javascript_automation_efffect_and_javascript_bots/9_toggle_visiblity_image_slider/screenshot/Neon.jpg)"
+            ];
+            const slo=['I Am King','All Mortals Are Fools','I Will Take Over The World'];
+            let currentIndex = 0;
+            setInterval(() => {
+                visible=!visible;
+                if (visible) {
+                    box.style.display = 'flex';
+                    slob.style.display='flex';
+                    box.style.backgroundImage = images[currentIndex];
+                    slob.textContent=slo[currentIndex];
+                    box.style.backgroundSize = 'cover';
+                    box.style.backgroundRepeat = 'no-repeat';
+                    box.style.backgroundPosition = 'center';
+
+                    currentIndex = (currentIndex + 1) % images.length;
+                }else{
+                    box.style.display='none';
+                    slob.style.display='none'
+                }
+            }, 1500);
+        })
+
+    </script>
+
+</body>
+
+</html>
