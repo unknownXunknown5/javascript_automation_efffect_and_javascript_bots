@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>growingbox</title>
+    <style>
+        /* *{
+            height:0px;
+            width:0px;
+        } */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #grwn {
+            background-color: blue;
+            width: 150px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size:40px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="grwn">HI</div>
+
+<script>
+    const box=document.getElementById("grwn");
+    //let width=100;
+    let scaleX=1;
+    scaleY=1;
+    let growing=true;
+    
+       function animate(){
+        if(growing){
+            scaleX+=0.05
+            scaleY+=0.02;
+            if(scaleX>=3) growing=false;
+        }else{
+             scaleX-=0.05
+            scaleY-=0.02;
+            if(scaleX<=1) growing=true;
+        }
+        box.style.transform=`scale(${scaleX},${scaleY})`;
+        
+       }
+       setInterval(animate,50);
+        
+
+
+
+</script>
+
+</body>
+
+</html>
