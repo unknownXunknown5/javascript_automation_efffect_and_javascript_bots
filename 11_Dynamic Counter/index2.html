@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <h1 id="cnt"></h1>
+
+
+
+    <script>
+        const cnt=document.getElementById("cnt");
+        let count=0;
+
+        function counter(){
+           
+           count++;
+        if(count%10==0){
+            cnt.style.fontSize="100px";
+        }else{
+            cnt.style.fontSize="20px";
+         
+
+        }
+        cnt.textContent=count;
+        
+    }
+        
+        setInterval(counter,1500);    
+       
+    </script>
+    
+</body>
+</html>
