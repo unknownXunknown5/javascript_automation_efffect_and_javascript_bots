@@ -19,7 +19,7 @@ This project simulates falling raindrops (Matrix-style) with smooth motion using
 
 ## 📸 Preview
 
-> 📷 *Add screenshot/GIF of rain animation*
+> 📷 ![alt text](<Screen Recording 2026-04-01 195305.gif>)
 
 ---
 
@@ -150,7 +150,7 @@ You can modify:
 
 ✔ Better approach:
 
-
+ 
 ---
 
 ## 📈 Future Improvements
