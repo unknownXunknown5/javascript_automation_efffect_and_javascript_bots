@@ -84,7 +84,7 @@ pulse();
 1. Clone the repository
 
 ```bash id="pulserun"
-git clone https://github.com/your-username/pulse-animation.git
+git clone 
 ```
 
 2. Open `index.html` in your browser
