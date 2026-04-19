@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FireWork</title>
+</head>
+<body>
+    <canvas id="fire" width="800px" height="600px" style="background:#111"></canvas>
+    <script>
+        const canvas=document.getElementById("fire");
+        const ctx=canvas.getContext('2d');
+        let particles=[];
+        function createfirework(){
+            const x=Math.random()*canvas.width;
+            const y=Math.random()*300;
+            for(let i=0;i<60;i++){
+                particles.push({
+                    x,y,
+                    vx:(Math.random()-0.5)*12,
+                    vy:(Math.random()-0.5)*12-4,
+                    life:60,
+                    color:`hsl(${Math.random()*60+300},100%,70%)`
+                });
+            }
+        }
+        function animateFireWork(){
+            ctx.fillStyle='rgba(0,0,0,0.15)';
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+            particles=particles.filter(p=>{
+                p.x+=p.vx;
+                p.y+=p.vy;
+                p.vy+=0.2;  //gravity
+                p.life--;  
+                ctx.fillStyle=p.color;
+                ctx.fillRect(p.x,p.y,4,4);
+                return p.life>0;
+            });
+            if(Math.random()<0.12) createfirework();
+            requestAnimationFrame(animateFireWork);
+        }
+        animateFireWork();
+    </script>
+</body>
+
+</html>
