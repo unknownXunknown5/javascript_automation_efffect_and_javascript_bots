@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Refresh After 3 Images (Preloaded)</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      width: 100vw;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Step 1: Define URLs
+    const urls = [
+      'https://picsum.photos/1920/1080?random=1',
+      'https://picsum.photos/1920/1080?random=2',
+      'https://picsum.photos/1920/1080?random=3'
+    ];
+
+    // Step 2: Preload images into memory (becuse downloading image take time so we want to preload this images)
+    const images = urls.map(url => {
+      const img = new Image();
+      img.src = url;
+      return img;
+    });
+
+    let i = 0;
+
+    //  Cycle through preloaded images
+    const interval = setInterval(() => {
+      document.body.style.backgroundImage = `url(${images[i].src})`;
+      i++;
+
+     //After showing all 3, refresh page
+      if (i >= images.length) {
+        clearInterval(interval);
+        setTimeout(() => {
+          location.reload(); // reloads the page for a new set (to genrate new set of images added this beacuse 3 images repeat itself many times)
+        }, 0); //all images finish then not wait and relaod the page
+      }
+    }, 1000); // change every 1 seconds
+
+  </script>
+</body>
+</html>
