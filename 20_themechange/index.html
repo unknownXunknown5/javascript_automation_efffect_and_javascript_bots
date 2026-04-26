@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theme Switch Demo</title>
+  <style>
+    /* Party Theme */
+    [data-theme="party"] {
+      --bg-primary: #0a001f; /* defines main bacground as dark purplw  we use --bg-primary not use directly bacground-color because we define these and whenver we need it we can use it */
+      --bg-secondary: #1a0033;  /*on main background there a layer of slight dark purple*/
+      --bg-glass: rgba(138, 43, 226, 0.2);/*used for glass effect like translucenty cards*/
+      --text-primary: #ff00ff; /*primary text color for heading or body text*/
+      --text-secondary: #00ffff;
+      --accent-primary: #ff00aa;
+      --accent-secondary: #00ff88;
+      --glass-blur: blur(25px);
+      --shadow-primary: 0 0 50px rgba(255,0,255,0.5);  
+      /*we defines all these effect and we need it we will use*/
+    }
+
+    /* Light Theme */
+    [data-theme="light"] {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f0f0f0;
+      --bg-glass: rgba(200, 200, 200, 0.2);
+      --text-primary: #000000;
+      --text-secondary: #333333;
+      --accent-primary: #007bff;
+      --accent-secondary: #ff8800;
+      --glass-blur: blur(10px);
+      --shadow-primary: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    body {
+      background: var(--bg-primary);  /*light me  we same var hai --bg-primary and */
+      color: var(--text-primary);
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    h1 {
+      text-shadow: var(--shadow-primary);
+    }
+
+    .card {
+      background: var(--bg-glass);
+      backdrop-filter: var(--glass-blur);
+      padding: 2rem;
+      border-radius: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    button {
+      margin: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--accent-primary);
+      color: #fff;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body data-theme="party">  <!-- *we set data theme party by default but when we click light theme our script set attribute to light and then our whome theme will change to light  -->
+  <div class="card">
+    <h1>Theme Switcher</h1>
+    <p>Click a button to change the theme.</p>
+  </div>
+
+  <button onclick="setTheme('party')">Party 🎉</button>
+  <button onclick="setTheme('light')">Light ☀️</button>
+
+  <script>
+    function setTheme(theme) {
+      document.body.setAttribute("data-theme", theme);
+    }
+  </script>
+</body>
+</html>
