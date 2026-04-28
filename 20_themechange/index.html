@@ -31,6 +31,20 @@
       --glass-blur: blur(10px);
       --shadow-primary: 0 0 10px rgba(0,0,0,0.2);
     }
+    [data-theme='dark']{
+      --bg-primary:black;
+      --bg-secondary:rgb(50, 45, 45);
+      --bg-glass:rgba(94, 50, 50, 0.2);
+      --text-primary:rgb(107, 118, 33);
+      --text-secondary:rgb(119, 119, 41);
+      --glass-blur:blur(10px);
+      --accent-primary:rgb(204, 187, 120);
+      --accent-secondary:rgb(230, 161, 161);
+      --shadow-primary:0 0 10px rgba(0,0,0,0.2);
+
+
+
+    }
 
     body {
       background: var(--bg-primary);  /*light me  we same var hai --bg-primary and */
@@ -45,6 +59,7 @@
     }
 
     h1 {
+      font-family: cursive;
       text-shadow: var(--shadow-primary);
     }
 
@@ -69,7 +84,9 @@
     }
   </style>
 </head>
+
 <body data-theme="party">  <!-- *we set data theme party by default but when we click light theme our script set attribute to light and then our whome theme will change to light  -->
+ <h1>Hello World</h1>
   <div class="card">
     <h1>Theme Switcher</h1>
     <p>Click a button to change the theme.</p>
@@ -77,6 +94,7 @@
 
   <button onclick="setTheme('party')">Party 🎉</button>
   <button onclick="setTheme('light')">Light ☀️</button>
+  <button onclick="setTheme('dark')">night🌑</button>
 
   <script>
     function setTheme(theme) {
