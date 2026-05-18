@@ -1,7 +1,3 @@
-Excellent observation — both your **party** and **light** themes define a variable called `--bg-primary`. So how does the browser know which one to use?  
-
-The answer lies in the **`data-theme` attribute on the `<body>` (or any element)**:
-
 ---
 
 ### 🔑 How the browser decides
