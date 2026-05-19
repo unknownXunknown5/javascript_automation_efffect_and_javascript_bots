@@ -42,5 +42,3 @@
 ---
 
 ✅ In short: the **same variable name** can exist in multiple themes, but only the one inside the currently active `[data-theme="..."]` block applies. That’s how your body decides which value to use.
-
-Would you like me to show you a **demo with three themes (party, light, dark)** where the same CSS rules automatically adapt just by switching `data-theme`?
