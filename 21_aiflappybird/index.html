@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marquee</title>
+    <style>
+        body{
+            margin:0;height:100vh;background:#0f001a;display:flex;align-items: center;overflow: hidden;
+        }
+        .marquee{
+            white-space: nowrap;font-size: 3.5rem;color:aqua;display: inline-block;animation: marquee 25s linear infinite ;
+        }
+        @keyframes marquee{
+            from{transform:translateX(0);}
+            to{transform:translateX(-50%);}
+
+        }
+        .marquee:hover{animation-play-state: paused;}
+    </style>
+</head>
+<body>
+    <div  class="marquee" id="marquee">Today There is Going To Be Your Good Day </div>
+    <script>
+        const marquee=document.getElementById('marquee');
+        marquee.innerHTML+=marquee.innerHTML;
+    </script>
+
+    
+</body>
+</html>
