@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Cube Portfolio</title>
+  <style>
+    body {
+      margin: 0; 
+      height: 100vh; 
+      background: #0a001f;
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      perspective: 1500px;
+      overflow: hidden;
+      user-select: none; 
+    }
+    .cube {
+      width: 380px;
+      height: 380px;
+      position: relative;
+      transform-style: preserve-3d;
+      /* Increased transition time so the snap-to-face looks cinematic */
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+    }
+    
+    .face {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      background: rgba(30, 0, 60, 0.85);
+      border: 2px solid #00ffff;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+      padding: 0;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                  box-shadow 0.4s ease, 
+                  background 0.4s ease;
+    }
+    
+    .face a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      color: white;
+      font-family: sans-serif;
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .face:hover {
+      background: rgba(45, 0, 90, 0.95);
+      border-color: #ff00ff;
+      box-shadow: 0 0 50px rgba(255, 0, 255, 0.6);
+    }
+
+    /* Target individual faces on hover to pull them OUTWARDS in 3D space */
+    .face:nth-child(1):hover { transform: rotateY(0deg) translateZ(230px) !important; }
+    .face:nth-child(2):hover { transform: rotateY(90deg) translateZ(230px) !important; }
+    .face:nth-child(3):hover { transform: rotateY(180deg) translateZ(230px) !important; }
+    .face:nth-child(4):hover { transform: rotateY(270deg) translateZ(230px) !important; }
+    .face:nth-child(5):hover { transform: rotateX(90deg) translateZ(230px) !important; }
+    .face:nth-child(6):hover { transform: rotateX(-90deg) translateZ(230px) !important; }
+
+    .face:hover a {
+      color: #ff00ff;
+      text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cube" id="cube">
+    <div class="face" style="transform: rotateY(0deg) translateZ(190px);"><a href="#home" data-target-x="0" data-target-y="0">HOME</a></div>
+    <div class="face" style="transform: rotateY(90deg) translateZ(190px);"><a href="#projects" data-target-x="0" data-target-y="-90">PROJECTS</a></div>
+    <div class="face" style="transform: rotateY(180deg) translateZ(190px);"><a href="#about" data-target-x="0" data-target-y="-180">ABOUT</a></div>
+    <div class="face" style="transform: rotateY(270deg) translateZ(190px);"><a href="#contact" data-target-x="0" data-target-y="-270">CONTACT</a></div>
+    <div class="face" style="transform: rotateX(90deg) translateZ(190px);"><a href="#work" data-target-x="-90" data-target-y="0">WORK</a></div>
+    <div class="face" style="transform: rotateX(-90deg) translateZ(190px);"><a href="#lab" data-target-x="90" data-target-y="0">LAB</a></div>
+  </div>
+
+  <script>
+    const cube = document.getElementById('cube');
+    let rotX = -25, rotY = 30;
+    let isDragging = false;
+    let isHovering = false; 
+    let isTransitioning = false; // Prevents drag interference while spinning to focus
+    let prevX, prevY;
+    
+    let dragThreshold = 5; 
+    let startX, startY;
+
+    // Apply starting rotation
+    cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+
+    cube.addEventListener('mouseenter', () => isHovering = true);
+    cube.addEventListener('mouseleave', () => {
+      isHovering = false;
+      isDragging = false;
+    });
+
+    cube.addEventListener('mousedown', e => {
+      if (isTransitioning) return; // Block dragging during auto-focus
+      isDragging = true;
+      prevX = e.clientX;
+      prevY = e.clientY;
+      startX = e.clientX;
+      startY = e.clientY;
+      cube.style.transition = 'none'; // Snappy response while dragging
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        cube.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+      }
+    });
+    
+    document.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      
+      rotY += (e.clientX - prevX) * 0.4;
+      rotX -= (e.clientY - prevY) * 0.4; 
+      
+      prevX = e.clientX;
+      prevY = e.clientY;
+
+      cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    });
+
+    // Handle Intercepting the Click and Rotating the Face Forward
+    const links = document.querySelectorAll('.face a');
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault(); // Stop browser from changing URL immediately
+
+        const deltaX = Math.abs(e.clientX - startX);
+        const deltaY = Math.abs(e.clientY - startY);
+        
+        // If it was a genuine drag, don't focus
+        if (deltaX > dragThreshold || deltaY > dragThreshold) return;
+
+        // Turn off normal triggers
+        isTransitioning = true;
+        isHovering = true; 
+
+        // Read the mathematical target stored on the link element
+        rotX = parseInt(link.getAttribute('data-target-x'));
+        rotY = parseInt(link.getAttribute('data-target-y'));
+
+        // Turn transitions back on and spin the cube face flat to the screen
+        cube.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+        cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+
+        // Delay the redirect until the animation finishes (800ms)
+        const destination = link.getAttribute('href');
+        setTimeout(() => {
+          isTransitioning = false;
+          isHovering = false;
+          window.location.href = destination; // Proceed to link
+        }, 800);
+      });
+    });
+
+    // Auto gentle rotation
+    setInterval(() => {
+      if (!isDragging && !isHovering && !isTransitioning) {
+        rotY += 0.2;
+        cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      }
+    }, 30);
+  </script>
+</body>
+</html>
