@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sound Terrain</title>
+  <style>
+    body { margin:0; overflow:hidden; background:#000; }
+    button { position:absolute; top:20px; left:50%; transform:translateX(-50%); padding:12px 24px; z-index:10; }
+  </style>
+</head>
+<body>
+  <button onclick="startAudio()">Start Microphone</button>
+  <canvas id="c"></canvas>
+
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    let analyser, dataArray, running = false;
+
+    async function startAudio() {
+      if (running) return;
+      running = true;
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const source = audioContext.createMediaStreamSource(stream);
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 128;
+      source.connect(analyser);
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
+      animate();
+    }
+
+   function animate() {
+  if (!analyser) return;
+  analyser.getByteFrequencyData(dataArray);
+
+  ctx.fillStyle = 'rgba(5,0,20,0.15)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const cols = 32;
+  const spacing = canvas.width / cols;
+
+  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  gradient.addColorStop(0, '#00ffff');
+  gradient.addColorStop(1, '#001133');
+  ctx.strokeStyle = gradient;
+  ctx.lineWidth = 3;
+
+  for (let x = 0; x < cols; x++) {
+    const value = dataArray[Math.floor(x * dataArray.length / cols)] || 20;
+    const height = value / 2.5;
+
+    ctx.shadowBlur = height > 50 ? 15 : 0;
+    ctx.shadowColor = '#00ffff';
+
+    ctx.beginPath();
+    ctx.moveTo(x * spacing, canvas.height);
+    ctx.quadraticCurveTo(
+      x * spacing + spacing / 2,
+      canvas.height - height * 2.5,
+      (x + 1) * spacing,
+      canvas.height
+    );
+    ctx.stroke();
+  }
+
+  requestAnimationFrame(animate);
+}
+
+
+    // Resize
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+  </script>
+</body>
+</html>

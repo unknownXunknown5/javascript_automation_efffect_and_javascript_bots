@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Photo Grid</title>
+  <style>
+    body {
+      margin:0; height:100vh; background:#0a001f; overflow:hidden;
+      perspective: 1800px; display:flex; align-items:center; justify-content:center;
+      font-family: sans-serif;
+    }
+    .grid {
+      width: 900px;
+      height: 600px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.1s;
+    }
+    .photo {
+      position: absolute;
+      width: 180px;
+      height: 220px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+      border: 2px solid rgba(255,255,255,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .photo:hover {
+      transform: scale(1.2) translateZ(40px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.9);
+      z-index: 10;
+    }
+    .info {
+      position: absolute;
+      bottom: -30px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .photo:hover .info {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid" id="grid"></div>
+
+  <script>
+    const grid = document.getElementById('grid');
+    let rotX = -12, rotY = 28, zoom = 0;
+    let activePhoto = null; // track which photo is forward
+
+    // Create photos
+    for (let i = 0; i < 18; i++) {
+      const photo = document.createElement('div');
+      photo.className = 'photo';
+      photo.style.backgroundImage = `url('https://picsum.photos/180/220?random=${i}')`;
+      photo.style.left = (i % 6) * 150 + 'px';
+      photo.style.top = Math.floor(i / 6) * 160 + 'px';
+      photo.style.transform = `translateZ(${Math.random()*80 - 40}px)`;
+
+      const info = document.createElement('div');
+      info.className = 'info';
+      info.textContent = `Photo #${i+1}`;
+      photo.appendChild(info);
+
+      // Save base transform for reset
+      photo.dataset.baseTransform = photo.style.transform;
+
+      // Click handler: toggle forward/back
+      photo.addEventListener('click', () => {
+        if (activePhoto === photo) {
+          // clicked again -> reset
+          photo.style.zIndex = '1';
+          photo.style.transform = photo.dataset.baseTransform;
+          activePhoto = null;
+        } else {
+          // reset all others
+          document.querySelectorAll('.photo').forEach(p => {
+            p.style.zIndex = '1';
+            p.style.transform = p.dataset.baseTransform;
+          });
+          // bring clicked forward
+          photo.style.zIndex = '999';
+          photo.style.transform = 'translateZ(200px) scale(1.3)';
+          activePhoto = photo;
+        }
+      });
+
+      grid.appendChild(photo);
+    }
+
+    let isDragging = false, prevX, prevY;
+
+    grid.addEventListener('mousedown', e => {
+      isDragging = true;
+      prevX = e.clientX;
+      prevY = e.clientY;
+    });
+
+    document.addEventListener('mouseup', () => isDragging = false);
+    document.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      rotY += (e.clientX - prevX) * 0.6;
+      rotX -= (e.clientY - prevY) * 0.6;
+      prevX = e.clientX;
+      prevY = e.clientY;
+      updateTransform();
+    });
+
+    // Scroll zoom
+    document.addEventListener('wheel', e => {
+      zoom += e.deltaY * 0.5;
+      updateTransform();
+    });
+
+    function updateTransform() {
+      grid.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(${zoom}px)`;
+    }
+  </script>
+</body>
+</html>
