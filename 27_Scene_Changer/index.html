@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scroll Scene Changer</title>
+  <style>
+    body { margin:0; height:300vh; background:#000; font-family:Arial; overflow-x:hidden; }
+    section {
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 4rem;
+      transition: all 0.6s;
+    }
+  </style>
+</head>
+<body>
+  <section style="background:#0a0022" id="s1">DAY</section>
+  <section style="background:#1a0022" id="s2">EVENING</section>
+  <section style="background:#000033" id="s3">NIGHT</section>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const scroll = window.scrollY;
+      const vh = window.innerHeight;
+      const progress = Math.min(scroll / vh, 2);
+
+      document.getElementById('s1').style.opacity = Math.max(0, 1 - progress);
+      document.getElementById('s2').style.opacity = Math.max(0, 1 - Math.abs(progress - 1));
+      document.getElementById('s3').style.opacity = Math.max(0, progress - 1);
+    });
+  </script>
+</body>
+</html>
