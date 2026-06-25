@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Dashboard API</title>
+  <style>
+    body { margin:0; overflow:hidden; background:#000; display:flex; }
+    canvas { flex:1; display:block; }
+    #forecast {
+      width:280px; background:#111; color:#fff; padding:10px;
+      font-family:sans-serif; overflow-y:auto;
+    }
+    .day { padding:8px; margin:4px 0; cursor:pointer; border:1px solid #333; }
+    .day:hover { background:#222; }
+    h3 { margin-top:0; }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div id="forecast"><h3>Loading...</h3></div>
+
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [], mode = "sunny", flash = false;
+
+    function resize() {
+      w = canvas.width = window.innerWidth - 280; // leave space for forecast panel
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Particle classes
+    class Rain {
+      constructor(){ this.reset(); }
+      reset(){ this.x=Math.random()*w; this.y=Math.random()*-h;
+        this.len=Math.random()*20+10; this.speed=Math.random()*10+10; }
+      update(){ this.y+=this.speed; if(this.y>h) this.reset(); }
+      draw(){ ctx.strokeStyle='#88ccff'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(this.x,this.y);
+        ctx.lineTo(this.x,this.y+this.len); ctx.stroke(); }
+    }
+    class Snow {
+      constructor(){ this.reset(); }
+      reset(){ this.x=Math.random()*w; this.y=Math.random()*-h;
+        this.r=Math.random()*3+2; this.speed=Math.random()*2+1; }
+      update(){ this.y+=this.speed; if(this.y>h) this.reset(); }
+      draw(){ ctx.fillStyle='#fff'; ctx.beginPath();
+        ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill(); }
+    }
+
+    function drawSun(){
+      const rays=20; ctx.strokeStyle='yellow'; ctx.lineWidth=3;
+      for(let i=0;i<rays;i++){
+        const angle=(i/rays)*Math.PI*2;
+        const x1=w/2+Math.cos(angle)*50, y1=h/2+Math.sin(angle)*50;
+        const x2=w/2+Math.cos(angle)*120, y2=h/2+Math.sin(angle)*120;
+        ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+      }
+      ctx.fillStyle='yellow'; ctx.beginPath(); ctx.arc(w/2,h/2,40,0,Math.PI*2); ctx.fill();
+    }
+
+    // Thunder flash
+    function thunderFlash(){
+      flash=true; setTimeout(()=>flash=false,100);
+      setTimeout(thunderFlash,Math.random()*5000+2000);
+    }
+    thunderFlash();
+
+    // Map weather codes to modes
+    function mapWeatherCode(code){
+      if(code===0) return "sunny";
+      if(code>=51 && code<=67) return "rain";
+      if(code>=71 && code<=77) return "snow";
+      if(code>=95) return "rain"; // thunderstorm
+      return "sunny";
+    }
+
+    // Fetch location + forecast
+    async function fetchForecast(lat, lon){
+      try{
+        // 1. Location name
+        const locRes=await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+        const locData=await locRes.json();
+        const city=locData.city||locData.locality;
+        const region=locData.principalSubdivision;
+        const country=locData.countryName;
+
+        // 2. Weather forecast
+        const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=auto`);
+        const data=await res.json();
+
+        const forecastDiv=document.getElementById("forecast");
+        forecastDiv.innerHTML=`<h3>${city}, ${region}, ${country}</h3>
+          <p>Current: ${mapWeatherCode(data.current_weather.weathercode)} ${data.current_weather.temperature}°C</p>
+          <h4>7-Day Forecast</h4>`;
+
+        data.daily.time.forEach((day,i)=>{
+          const code=data.daily.weathercode[i];
+          const max=data.daily.temperature_2m_max[i];
+          const min=data.daily.temperature_2m_min[i];
+          const div=document.createElement("div");
+          div.className="day";
+          div.textContent=`${day}: ${mapWeatherCode(code)} (${min}°C - ${max}°C)`;
+          div.onclick=()=>{ mode=mapWeatherCode(code); };
+          forecastDiv.appendChild(div);
+        });
+
+        // set current mode
+        mode=mapWeatherCode(data.current_weather.weathercode);
+      }catch(err){ console.error("Weather API error:",err); }
+    }
+
+    // Use geolocation
+    navigator.geolocation.getCurrentPosition(
+      pos=>fetchForecast(pos.coords.latitude,pos.coords.longitude),
+      err=>{ console.error("Geolocation error:",err); // fallback Danapur
+        fetchForecast(25.6,85.1);
+      }
+    );
+
+    function animate(){
+      // Background gradient
+      let grad=ctx.createLinearGradient(0,0,0,h);
+      if(mode==="sunny"){ grad.addColorStop(0,"#87ceeb"); grad.addColorStop(1,"#ffe066"); }
+      else if(mode==="snow"){ grad.addColorStop(0,"#cce6ff"); grad.addColorStop(1,"#ffffff"); }
+      else { grad.addColorStop(0,"#0a0f2c"); grad.addColorStop(1,"#1a1f3d"); }
+      ctx.fillStyle=grad; ctx.fillRect(0,0,w,h);
+
+      // Particles
+      if(mode==="rain"){ if(particles.length<200) particles.push(new Rain()); }
+      else if(mode==="snow"){ if(particles.length<150) particles.push(new Snow()); }
+      particles.forEach(p=>{ p.update(); p.draw(); });
+
+      if(mode==="sunny") drawSun();
+      if(mode==="rain" && flash){ ctx.fillStyle="rgba(255,255,255,0.8)"; ctx.fillRect(0,0,w,h); }
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
